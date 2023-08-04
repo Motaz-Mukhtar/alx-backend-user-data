@@ -50,10 +50,10 @@ def get_db() -> connection.MySQLConnection:
         Establish Connection to the database using
         mysql.connection module.
     """
-    username = os.getenv('PERSONAL_DATA_DB_USERNAME', 'root')
-    password = os.getenv('PERSONAL_DATA_DB_PASSWORD', '')
-    host = os.getenv('PERSONAL_DATA_DB_HOST', 'localhost')
-    database = os.getenv('PERSONAL_DATA_DB_NAME')
+    username = os.environ.get('PERSONAL_DATA_DB_USERNAME', 'root')
+    password = os.environ.get('PERSONAL_DATA_DB_PASSWORD', '')
+    host = os.environ.get('PERSONAL_DATA_DB_HOST', 'localhost')
+    database = os.environ.get('PERSONAL_DATA_DB_NAME')
 
     connect = connection.MySQLConnection(
         username=username,

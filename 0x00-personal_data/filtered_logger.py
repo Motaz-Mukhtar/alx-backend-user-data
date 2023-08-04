@@ -28,7 +28,6 @@ def filter_datum(fields: List[str], redaction: str,
     return msg_temp
 
 
-
 def get_logger() -> logging.Logger:
     """
         Logger should be named 'user_data' and only log up

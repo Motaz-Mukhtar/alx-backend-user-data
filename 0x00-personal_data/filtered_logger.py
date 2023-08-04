@@ -7,9 +7,11 @@
 from typing import List
 import re
 import logging
+import os
+from mysql.connector.connection import MySQLConnection
 
 
-PII_FIELDS = ['name', 'email', 'phone', 'ssn', 'password']
+PII_FIELDS = ('name', 'email', 'phone', 'ssn', 'password')
 
 
 def filter_datum(fields: List[str], redaction: str,
@@ -43,6 +45,25 @@ def get_logger() -> logging.Logger:
     return logger
 
 
+def get_db() -> MySQLConnection:
+    """
+        Establish Connection to the database using
+        mysql.connection module.
+    """
+    username = os.getenv('PERSONAL_DATA_DB_USERNAME', 'root')
+    password = os.getenv('PERSONAL_DATA_DB_PASSWORD', '')
+    host = os.getenv('PERSONAL_DATA_DB_HOST', 'localhost')
+    database = os.getenv('PERSONAL_DATA_DB_NAME')
+
+    connect = MySQLConnection(
+        username=username,
+        password=password,
+        host=host,
+        database=database)
+
+    return connect
+
+
 class RedactingFormatter(logging.Formatter):
     """
         Redacting Formatter class
@@ -61,3 +82,31 @@ class RedactingFormatter(logging.Formatter):
         return filter_datum(self.fields, self.REDACTION,
                             super(RedactingFormatter, self).format(record),
                             self.SEPARATOR)
+
+
+def main():
+    """
+        The function will obtain a database connetion using
+        get_db() and retrieve all rows in the users table.
+    """
+    db = get_db()
+    cursor = db.cursor()
+
+    cursor.execute("SELECT * FROM users;")
+    fetch = cursor.fetchall()
+
+    logger = get_logger()
+
+    for row in fetch:
+        fields = "name={};email={};phone={};ssn={};\
+                  password={};ip={},last_login={};user_agent={}".format(
+                          row[0], row[1], row[2], row[3], row[4], row[5],
+                          row[6], row[7])
+        logger.info(fields)
+
+    cursor.close()
+    db.close()
+
+
+if __name__ == "__main__":
+    main()

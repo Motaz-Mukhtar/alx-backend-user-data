@@ -8,7 +8,7 @@ from typing import List
 import re
 import logging
 import os
-from mysql.connector.connection import MySQLConnection
+from mysql.connector import connection
 
 
 PII_FIELDS = ('name', 'email', 'phone', 'ssn', 'password')
@@ -28,6 +28,7 @@ def filter_datum(fields: List[str], redaction: str,
     return msg_temp
 
 
+
 def get_logger() -> logging.Logger:
     """
         Logger should be named 'user_data' and only log up
@@ -45,7 +46,7 @@ def get_logger() -> logging.Logger:
     return logger
 
 
-def get_db() -> MySQLConnection:
+def get_db() -> connection.MySQLConnection:
     """
         Establish Connection to the database using
         mysql.connection module.
@@ -55,7 +56,7 @@ def get_db() -> MySQLConnection:
     host = os.getenv('PERSONAL_DATA_DB_HOST', 'localhost')
     database = os.getenv('PERSONAL_DATA_DB_NAME')
 
-    connect = MySQLConnection(
+    connect = connection.MySQLConnection(
         username=username,
         password=password,
         host=host,
@@ -73,7 +74,7 @@ class RedactingFormatter(logging.Formatter):
     FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
     SEPARATOR = ";"
 
-    def __init__(self, fields):
+    def __init__(self, fields: List[str]):
         super(RedactingFormatter, self).__init__(self.FORMAT)
         self.fields = fields
 

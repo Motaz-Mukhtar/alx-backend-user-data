@@ -4,7 +4,7 @@
 """
 from flask import request
 from models.user import User
-from typing import List
+from typing import List, TypeVar
 
 
 class Auth:
@@ -25,11 +25,11 @@ class Auth:
         and path=/api/v1/status/ must be returned False if
         excluded_paths contains /api/v1/status/
         """
-        if path[-1] != '/':
+        if path is not None and path[-1] != '/':
             path += '/'
-        if path not in excluded_paths:
+        if path is None:
             return True
-        elif path is None:
+        elif path not in excluded_paths:
             return True
         elif excluded_paths is None or excluded_paths == []:
             return True
@@ -49,10 +49,4 @@ class Auth:
             return None
         else:
             return request.headers['Authorization']
-        return None
-
-    def current_user(self, request=None) -> User:
-        """
-            Return None
-        """
         return None

@@ -66,9 +66,9 @@ class BasicAuth(Auth):
             Return User instance based on his email and password.
         """
 
-        if user_email is None or type(user_email) is not str:
+        if user_email is None or type(user_email) != str:
             return None
-        elif user_pwd is None or type(user_pwd) is not str:
+        elif user_pwd is None or type(user_pwd) != str:
             return None
 
         try:
@@ -76,12 +76,10 @@ class BasicAuth(Auth):
         except Exception:
             return None
 
-        user = users_list[0]
-
         for user in users:
             if user.is_valid_password(user_pwd):
                 return user
-        return None
+            return None
 
     def current_user(self, request=None) -> TypeVar('User'):
         """

@@ -39,15 +39,20 @@ def before_request():
     raise the error 403 - you must use abort
     """
     excluded_list = ['/api/v1/status/',
-                     '/api/v1/unauthorized/', '/api/v1/forbidden/']
+                     '/api/v1/unauthorized/', '/api/v1/forbidden/',
+                     '/api/v1/auth_session/login/']
     if auth is None:
         return None
     elif auth.require_auth(request.path, excluded_list) is False:
         return None
-    if auth.authorization_header(request) is None:
-        abort(401)
     elif auth.current_user(request) is None:
         abort(403)
+    elif auth.require_auth(request.path, exlucded_list):
+        if (auth.authorization_header(request) is None and
+            auth.session_cookie(request) is None):
+            abort(401)
+        if auth.currnet_user(request) is None:
+            abort(403)
 
     request.currnet_user = auth.current_user(request)
 

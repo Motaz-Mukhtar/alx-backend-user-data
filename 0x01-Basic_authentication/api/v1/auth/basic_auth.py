@@ -79,7 +79,7 @@ class BasicAuth(Auth):
         user = users_list[0]
 
         for user in users:
-            if user.is_valid_password(user_pwd) is False:
+            if user.is_valid_password(user_pwd):
                 return user
         return None
 

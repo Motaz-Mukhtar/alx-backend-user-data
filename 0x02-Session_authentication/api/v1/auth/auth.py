@@ -57,7 +57,7 @@ class Auth:
         """
             Placeholder
             Return None
-        """
+         """
         return None
 
     def session_cookie(self, request=None):

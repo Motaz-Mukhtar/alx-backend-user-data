@@ -71,8 +71,9 @@ class BasicAuth(Auth):
         elif user_pwd is None or type(user_pwd) is not str:
             return None
 
-        users_list = User.search({"email": user_email})
-        if not users_list:
+        try:
+            user_list = User.search({"email": user_email})
+        except Exception:
             return None
 
         user = users_list[0]
@@ -83,6 +84,7 @@ class BasicAuth(Auth):
 
     def current_user(self, request=None) -> TypeVar('User'):
         """
+            Retrive User instance for request.
         """
         if request is None:
             return None

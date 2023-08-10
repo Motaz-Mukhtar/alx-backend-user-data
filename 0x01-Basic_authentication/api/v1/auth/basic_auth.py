@@ -85,12 +85,8 @@ class BasicAuth(Auth):
         """
             Retrive User instance for request.
         """
-        if request is None:
-            return None
 
         authorization_header = self.authorization_header(request)
-        if authorization_header is None:
-            return None
 
         deocded_authorization = self.decode_base64_authorization_header(
             self.extract_base64_authorization_header(authorization_header)
@@ -98,8 +94,7 @@ class BasicAuth(Auth):
 
         user_credentials = self.extract_user_credentials(deocded_authorization)
 
-        user_instance = self.user_object_from_credentials(user_credentials[0],
-                                                          user_credentials[1])
+        user_instance = self.user_object_from_credentials(*user_credentials)
         if user_instance is None:
             return None
 

@@ -34,10 +34,11 @@ class Auth:
             return True
         for i in excluded_paths:
             if i.endswith('*'):
-                if path.split('/')[-2].startswith(i.split('/')[-1][:-1]):
+                astrike_word = path.split("/")[-2]
+                if (astrike_word.startswith(i.split('/')[-1][:-1])
+                        and astrike_word != i.split('/')[-1][:-1]):
                     return False
         if path not in excluded_paths:
-            print(1)
             return True
         return False
 

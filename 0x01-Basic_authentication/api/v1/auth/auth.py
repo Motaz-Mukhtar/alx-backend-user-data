@@ -25,7 +25,7 @@ class Auth:
         and path=/api/v1/status/ must be returned False if
         excluded_paths contains /api/v1/status/
         """
-        if path is not None and path[-1] != '/':
+        if path and path[-1] != '/':
             path += '/'
 
         if excluded_paths is None or excluded_paths == []:
@@ -33,11 +33,8 @@ class Auth:
         elif path is None:
             return True
         for i in excluded_paths:
-            if i.endswith('*'):
-                astrike_word = path.split("/")[-2]
-                if (astrike_word.startswith(i.split('/')[-1][:-1])
-                        and astrike_word != i.split('/')[-1][:-1]):
-                    return False
+            if i.endswith('*') and path.startswith(i[:-1]):
+                return False
         if path not in excluded_paths:
             return True
         return False

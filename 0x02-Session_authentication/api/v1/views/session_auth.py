@@ -19,7 +19,7 @@ def authentication_login():
         return jsonify({"error": "email missing"}), 400
 
     if password is None or password == "":
-        return jsonify({"error": "password"}), 400
+        return jsonify({"error": "password missing"}), 400
 
     user = None
     for users in User.search({"email": email}):

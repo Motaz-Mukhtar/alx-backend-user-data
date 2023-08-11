@@ -4,7 +4,7 @@
 """
 from api.v1.auth.session_auth import SessionAuth
 from datetime import datetime, timedelta
-import os
+from os import getenv
 
 
 class SessionExpAuth(SessionAuth):
@@ -15,7 +15,7 @@ class SessionExpAuth(SessionAuth):
     def __init__(self):
         super().__init__()
         try:
-            self.session_duration = os.getenv("SESSION_DURATION")
+            self.session_duration = int(getenv("SESSION_DURATION"))
         except Exception:
             self.session_duration = 0
 

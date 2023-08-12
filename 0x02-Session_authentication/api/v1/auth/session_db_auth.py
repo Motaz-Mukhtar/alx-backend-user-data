@@ -33,10 +33,8 @@ class SessionDBAuth(SessionExpAuth):
             Returns the User ID by requesting UserSession
             in the database based on session_id
         """
-        res = super().user_id_for_session_id(session_id)
-        if res is None:
+        if session_id is None:
             return None
-
         user_session = UserSession.search({"session_id": session_id})
         if len(user_session) == 0:
             return None

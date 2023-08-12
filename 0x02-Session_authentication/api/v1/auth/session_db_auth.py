@@ -38,7 +38,7 @@ class SessionDBAuth(SessionExpAuth):
             return None
 
         user_session = UserSession.search({"session_id": session_id})
-        if user_session == []:
+        if len(user_session) == 0:
             return None
         for user in user_session:
             if user.to_json().get('user_id'):

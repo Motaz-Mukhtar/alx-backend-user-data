@@ -39,8 +39,9 @@ class Auth:
         """
             check user password validation.
         """
-        user_record = self._db.find_user_by(email=email)
+        try:
+            user_record = self._db.find_user_by(email=email)
 
-        if bcrypt.checkpw(bytes(password, 'utf-8'), user_record.hashed_password):
-            return True
-        return False
+            return bcrypt.checkpw(bytes(password, 'utf-8'), user_record.hashed_password)
+        except NoResultFound:
+            return False

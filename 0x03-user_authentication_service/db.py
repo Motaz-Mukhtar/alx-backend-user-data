@@ -64,11 +64,11 @@ class DB:
         """
         user = self.find_user_by(id=user_id)
 
-        try:
-            for key, value in kwargs.items():
+        for key, value in kwargs.items():
+            if hasattr(user, key):
                 setattr(user, key, value)
-        except KeyError:
-            raise ValueError
+            else:
+                raise ValueError
 
         self._session.commit()
         return None

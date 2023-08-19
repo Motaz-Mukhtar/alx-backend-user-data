@@ -145,4 +145,3 @@ class Auth:
         self._db.update_user(user_record.id,
                              hashed_password=hashed_password,
                              reset_token=None)
-        return None

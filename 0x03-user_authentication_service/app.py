@@ -119,6 +119,7 @@ def update_password() -> str:
         Return:
             {'email': '<user email>', 'message': 'Password updated'}
             JSON payload
+            if token is invalid
     """
     email = request.form.get("email")
     reset_token = request.form.get("reset_token")
@@ -130,7 +131,7 @@ def update_password() -> str:
         abort(403)
 
     message = {"email": email, "message": "Password updated"}
-    return jsonify(message)
+    return jsonify(message), 200
 
 
 if __name__ == "__main__":

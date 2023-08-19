@@ -105,7 +105,7 @@ def reset_password():
     if not registered:
         abort(403)
 
-    reset_token = AUTH.get_reset_password_tokne(email)
+    reset_token = AUTH.get_reset_password_token(email)
 
     return jsonify({"email": email, "reset_token": reset_token}), 200
 
